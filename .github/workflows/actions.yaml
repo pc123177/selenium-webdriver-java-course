@@ -2,26 +2,24 @@ name: on_push
 
 on:
   push:
-    branches:
-      - "**"
+    branch:
+      - "**" # This will run on all branches, and must be quoted to be handled by yaml
 
 jobs:
 
   build_and_test:
     runs-on: ubuntu-latest
+
     env:
       RUNNER_OS: true
       HEADLESS_CHROME: true
 
-
     steps:
       - uses: actions/checkout@v2
-        # install java
-          - uses : actions/setup-java@v2
-            with:
-              distribution: 'zulu'
-              java-version: '16'
-              -name: Run tests with maven
-              working-directory: webdriver_java
-              run: mvn clean test
-              # Handle remote server chromedriver
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: 16
+      - name: Run tests with maven
+        working-directory: webdriver_java
+        run: mvn test
